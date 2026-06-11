@@ -2,23 +2,27 @@ services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: todo_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   backend:
     build: ./server
-    ports:
-      - "5001:5000"
+    environment:
+      DB_HOST: postgres
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: 5432
     depends_on:
       - postgres
 
   frontend:
     build: ./client
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:80"
     depends_on:
       - backend
 

@@ -1,23 +1,38 @@
 services:
   postgres:
     image: postgres:16
+    container_name: todo-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: todo_db
-    ports:
-      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
 
   backend:
     build: ./server
+    container_name: todo-backend
     ports:
-      - "5001:5000"
+      - "5000:5000"
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: todo_db
+      DB_PORT: 5432
     depends_on:
       - postgres
+    restart: always
 
   frontend:
     build: ./client
+    container_name: todo-frontend
     ports:
       - "3000:3000"
     depends_on:
       - backend
+    restart: always
+
+volumes:
+  pgdata:

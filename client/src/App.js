@@ -10,12 +10,12 @@ function App() {
   }, []);
 
   const getTodos = async () => {
-    const response = await axios.get("http://localhost:5000/api/todos");
+    const response = await axios.get("http://13.203.204.45/api/todos");
     setTodos(response.data);
   };
 
   const addTodo = async () => {
-    await axios.post("http://localhost:5000/api/todos", {
+    await axios.post("http://13.203.204.45/api/todos", {
       title: title
     });
 
@@ -25,7 +25,7 @@ function App() {
 
 const deleteTodo = async (id) => {
   await axios.delete(
-    `http://localhost:5000/api/todos/${id}`
+    `http://13.203.204.45/api/todos/${id}`
   );
 
   getTodos();
@@ -38,7 +38,7 @@ const updateTodo = async (id) => {
   if (!newTitle) return;
 
   await axios.put(
-    `http://localhost:5000/api/todos/${id}`,
+    `http://13.203.204.45/api/todos/${id}`,
     {
       title: newTitle
     }

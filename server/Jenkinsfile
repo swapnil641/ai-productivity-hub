@@ -40,6 +40,20 @@ stages {
             sh 'docker ps'
         }
     }
+
+    stage('Deploy to Ubuntu Server') {
+        steps {
+            sh '''
+                ssh -o StrictHostKeyChecking=no ubuntu@YOUR_SERVER_IP << 'EOF'
+                    cd ~/pern-app
+                    docker compose down
+                    docker pull sopudada641/pern-backend:latest
+                    docker pull sopudada641/pern-frontend:latest
+                    docker compose up -d
+
+               '''
+    }
+}
 }
 
 post {

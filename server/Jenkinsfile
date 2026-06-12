@@ -1,31 +1,55 @@
 pipeline {
-    agent any
+agent any
 
-    stages {
+stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'docker compose down -v || true'
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker compose up -d'
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh 'docker ps'
-            }
+    stage('Build Images') {
+        steps {
+            sh 'docker compose down || true'
+            sh 'docker compose build'
         }
     }
+
+    stage('Tag Images') {
+        steps {
+            sh 'docker tag pern-todo-pipeline-backend:latest sopudada641/pern-backend:latest'
+            sh 'docker tag pern-todo-pipeline-frontend:latest sopudada641/pern-frontend:latest'
+        }
+    }
+
+    stage('Push Backend') {
+        steps {
+            sh 'docker push sopudada641/pern-backend:latest'
+        }
+    }
+
+    stage('Push Frontend') {
+        steps {
+            sh 'docker push sopudada641/pern-frontend:latest'
+        }
+    }
+
+    stage('Deploy') {
+        steps {
+            sh 'docker compose up -d'
+        }
+    }
+
+    stage('Verify') {
+        steps {
+            sh 'docker ps'
+        }
+    }
+}
+
+post {
+    success {
+        echo 'Pipeline Completed Successfully'
+    }
+
+    failure {
+        echo 'Pipeline Failed'
+    }
+}
+
 }

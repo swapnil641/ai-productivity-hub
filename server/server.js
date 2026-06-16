@@ -85,6 +85,15 @@ app.delete("/api/todos/:id", async (req, res) => {
     }
 });
 
-app.listen(5000, () => {
-    console.log("Server started on port 5000");
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error("Database connection failed:", err.message);
+    }
+
+    console.log("Database connected successfully");
+    release();
+
+    app.listen(5000, () => {
+        console.log("Server started on port 5000");
+    });
 });

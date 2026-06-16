@@ -50,7 +50,7 @@ pipeline {
                 // Make sure 'ubuntu-server-ssh' credential (SSH key) exists in Jenkins
                 sshagent(['ubuntu@ec2-13-233-146-16']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@13.203.204.45 '
+                        ssh -o StrictHostKeyChecking=no ubuntu@13.233.146.16 '
                             cd ~/pern-app &&
                             docker compose down || true &&
                             docker pull sopudada641/pern-backend &&

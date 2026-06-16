@@ -17,7 +17,7 @@ services:
       DB_NAME: ${DB_NAME}
       DB_PORT: 5432
     depends_on:
-      - postgres
+      - postgres  
 
   frontend:
     build: ./client

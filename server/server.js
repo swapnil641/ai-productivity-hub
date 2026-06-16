@@ -5,6 +5,9 @@ const pool = require("./db");
 const app = express();
 
 app.use(cors());
+app.use(cors({
+  origin: 'http://13.233.146.16:3000'
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {

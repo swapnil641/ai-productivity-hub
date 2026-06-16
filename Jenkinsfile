@@ -48,7 +48,7 @@ pipeline {
         stage('Deploy to Ubuntu Server') {
             steps {
                 // Make sure 'ubuntu-server-ssh' credential (SSH key) exists in Jenkins
-                sshagent(credentials: ['ubuntu-server-ssh']) {
+                sshagent(['ubuntu-server-ssh']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@13.203.204.45 '
                             cd ~/pern-app &&

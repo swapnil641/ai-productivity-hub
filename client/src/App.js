@@ -48,35 +48,59 @@ const updateTodo = async (id) => {
 };
 
   return (
-    <div>
-      <h1>My Todo App</h1>
 
-      <input
-        type="text"
-        placeholder="Enter Todo"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+  <div className="App">
+    <h1>🚀 DevOps Todo Dashboard</h1>
 
-      <button onClick={addTodo}>Add Todo</button>
+```
+<p className="subtitle">
+  React • Node.js • PostgreSQL • Docker • Jenkins
+</p>
 
-      <hr />
-	{todos.map((todo) => (
-  <div key={todo.id}>
-    <h3>{todo.title}</h3>
+<div className="input-container">
+  <input
+    type="text"
+    placeholder="Enter a new task..."
+    value={title}
+    onChange={(e) => setTitle(e.target.value)}
+  />
 
-	<button onClick={() => updateTodo(todo.id)}>
-  Edit
-</button>
+  <button onClick={addTodo}>
+    Add Task
+  </button>
+</div>
 
-    <button onClick={() => deleteTodo(todo.id)}>
-      Delete
-    </button>
-  </div>
-))}
+<div className="todo-list">
+  {todos.map((todo) => (
+    <div className="todo-item" key={todo.id}>
+      <div>
+        <h3>{todo.title}</h3>
+        <small>ID: {todo.id}</small>
+      </div>
 
+      <div className="actions">
+        <button
+          className="edit-btn"
+          onClick={() => updateTodo(todo.id)}
+        >
+          ✏️ Edit
+        </button>
+
+        <button
+          className="delete-btn"
+          onClick={() => deleteTodo(todo.id)}
+        >
+          🗑 Delete
+        </button>
+      </div>
     </div>
-  );
+  ))}
+</div>
+```
+
+  </div>
+);
+
 }
 
 export default App;

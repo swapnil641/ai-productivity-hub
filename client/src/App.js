@@ -50,54 +50,48 @@ const updateTodo = async (id) => {
   return (
 
   <div className="App">
-    <h1>🚀 DevOps Todo Dashboard</h1>
-
-<p className="subtitle">
-  React • Node.js • PostgreSQL • Docker • Jenkins
-</p>
+    <h1>Todo App</h1>
 
 <div className="input-container">
   <input
     type="text"
-    placeholder="Enter a new task..."
+    placeholder="Add your new todo"
     value={title}
     onChange={(e) => setTitle(e.target.value)}
   />
 
-  <button onClick={addTodo}>
-    Add Task
-  </button>
+  <button onClick={addTodo}>+</button>
 </div>
 
-<div className="todo-list">
-  {todos.map((todo) => (
-    <div className="todo-item" key={todo.id}>
-      <div>
-        <h3>{todo.title}</h3>
-        <small>ID: {todo.id}</small>
-      </div>
+{todos.map((todo) => (
+  <div className="todo-item" key={todo.id}>
+    <h3>{todo.title}</h3>
 
-      <div className="actions">
-        <button
-          className="edit-btn"
-          onClick={() => updateTodo(todo.id)}
-        >
-          ✏️ Edit
-        </button>
+    <div className="actions">
+      <button
+        className="edit-btn"
+        onClick={() => updateTodo(todo.id)}
+      >
+        ✏️
+      </button>
 
-        <button
-          className="delete-btn"
-          onClick={() => deleteTodo(todo.id)}
-        >
-          🗑 Delete
-        </button>
-      </div>
+      <button
+        className="delete-btn"
+        onClick={() => deleteTodo(todo.id)}
+      >
+        🗑️
+      </button>
     </div>
-  ))}
+  </div>
+))}
+
+<div className="footer">
+  <span>You have {todos.length} pending tasks</span>
 </div>
 
   </div>
 );
+
 
 }
 

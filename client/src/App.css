@@ -2,93 +2,111 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
   }
 
 body {
-background: linear-gradient(135deg, #0f172a, #1e293b);
 min-height: 100vh;
-font-family: "Segoe UI", sans-serif;
+background: linear-gradient(135deg, #65d6ce, #4f8df5);
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 .App {
-width: 90%;
-max-width: 850px;
-margin: 40px auto;
-padding: 30px;
-background: rgba(255,255,255,0.08);
-backdrop-filter: blur(10px);
-border-radius: 20px;
-color: white;
-box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+width: 450px;
+background: #fff;
+padding: 25px;
+border-radius: 8px;
+box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-h1 {
-text-align: center;
-margin-bottom: 10px;
-}
-
-.subtitle {
-text-align: center;
-color: #cbd5e1;
-margin-bottom: 30px;
+.App h1 {
+color: #222;
+margin-bottom: 20px;
 }
 
 .input-container {
 display: flex;
-gap: 10px;
-margin-bottom: 25px;
+gap: 5px;
+margin-bottom: 20px;
 }
 
-input {
+.input-container input {
 flex: 1;
-padding: 15px;
-border: none;
-border-radius: 10px;
+height: 45px;
+border: 1px solid #ddd;
+padding: 0 15px;
 font-size: 16px;
-}
-
-button {
-border: none;
-padding: 12px 20px;
-border-radius: 10px;
-cursor: pointer;
-font-weight: bold;
+border-radius: 4px;
 }
 
 .input-container button {
-background: #2563eb;
+width: 45px;
+height: 45px;
+border: none;
+background: #8b5cf6;
 color: white;
+font-size: 24px;
+border-radius: 4px;
+cursor: pointer;
 }
 
 .todo-item {
+background: #f1f1f1;
+margin-bottom: 10px;
+padding: 12px 15px;
+border-radius: 4px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-background: rgba(255,255,255,0.1);
-padding: 15px;
-margin-bottom: 12px;
-border-radius: 12px;
+}
+
+.todo-item h3 {
+font-size: 16px;
+font-weight: 500;
+color: #333;
+}
+
+.todo-item small {
+display: none;
 }
 
 .actions {
 display: flex;
-gap: 10px;
+gap: 5px;
 }
 
 .edit-btn {
 background: #f59e0b;
+border: none;
 color: white;
+padding: 8px 10px;
+border-radius: 4px;
+cursor: pointer;
 }
 
 .delete-btn {
 background: #ef4444;
+border: none;
 color: white;
+padding: 8px 10px;
+border-radius: 4px;
+cursor: pointer;
 }
 
-.edit-btn:hover {
-background: #d97706;
+.footer {
+margin-top: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
-.delete-btn:hover {
-background: #dc2626;
+.footer button {
+background: #8b5cf6;
+color: white;
+border: none;
+padding: 10px 15px;
+border-radius: 4px;
+cursor: pointer;
 }

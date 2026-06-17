@@ -52,7 +52,6 @@ const updateTodo = async (id) => {
   <div className="App">
     <h1>🚀 DevOps Todo Dashboard</h1>
 
-```
 <p className="subtitle">
   React • Node.js • PostgreSQL • Docker • Jenkins
 </p>
@@ -96,7 +95,6 @@ const updateTodo = async (id) => {
     </div>
   ))}
 </div>
-```
 
   </div>
 );

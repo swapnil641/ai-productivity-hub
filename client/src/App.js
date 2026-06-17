@@ -53,7 +53,8 @@ return (
   <div className="app">
     <div className="container">
       <div className="header">
-        <h1>🚀 DevOps Todo Dashboard</h1>
+        <h3> Swapnil Pawar</h3>
+        <h1>🚀 Todo Dashboard</h1>
         <p>React • Node.js • PostgreSQL • Docker • Jenkins</p>
       </div>
 

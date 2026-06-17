@@ -48,9 +48,9 @@ pipeline {
         stage('Deploy to Ubuntu Server') {
             steps {
                 // Make sure 'ubuntu-server-ssh' credential (SSH key) exists in Jenkins
-                sshagent(['ubuntu@ec2-13-233-146-16']) {
+                sshagent(['ubuntu@ec2-3-110-189-247']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@13.233.146.16 '
+                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-110-189-247 '
                             cd ~/pern-app &&
                             docker compose down || true &&
                             docker pull sopudada641/pern-backend &&

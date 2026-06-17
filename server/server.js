@@ -7,7 +7,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "http://13.233.146.16:3000",
+    origin: "http://3.110.189.247:3000",
   })
 );
 

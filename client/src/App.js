@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -56,7 +57,6 @@ return (
         <p>React • Node.js • PostgreSQL • Docker • Jenkins</p>
       </div>
 
-```
   <div className="input-box">
     <input
       type="text"
@@ -102,7 +102,6 @@ return (
     ))}
   </div>
 </div>
-```
 
   </div>
 );

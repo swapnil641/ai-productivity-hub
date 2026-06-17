@@ -1,112 +1,208 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-body {
-min-height: 100vh;
-background: linear-gradient(135deg, #65d6ce, #4f8df5);
-display: flex;
-justify-content: center;
-align-items: center;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
-.App {
-width: 450px;
-background: #fff;
-padding: 25px;
-border-radius: 8px;
-box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+body{
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b,
+#0f172a
+);
+
+min-height:100vh;
 }
 
-.App h1 {
-color: #222;
-margin-bottom: 20px;
+.app{
+display:flex;
+justify-content:center;
+padding:40px 20px;
 }
 
-.input-container {
-display: flex;
-gap: 5px;
-margin-bottom: 20px;
+.container{
+width:100%;
+max-width:900px;
 }
 
-.input-container input {
-flex: 1;
-height: 45px;
-border: 1px solid #ddd;
-padding: 0 15px;
-font-size: 16px;
-border-radius: 4px;
+.header{
+text-align:center;
+color:white;
+margin-bottom:30px;
+
+animation:fadeDown 0.8s ease;
 }
 
-.input-container button {
-width: 45px;
-height: 45px;
-border: none;
-background: #8b5cf6;
-color: white;
-font-size: 24px;
-border-radius: 4px;
-cursor: pointer;
+.header h1{
+font-size:42px;
+margin-bottom:10px;
 }
 
-.todo-item {
-background: #f1f1f1;
-margin-bottom: 10px;
-padding: 12px 15px;
-border-radius: 4px;
-display: flex;
-justify-content: space-between;
-align-items: center;
+.header p{
+color:#94a3b8;
 }
 
-.todo-item h3 {
-font-size: 16px;
-font-weight: 500;
-color: #333;
+.input-box{
+display:flex;
+gap:10px;
+margin-bottom:25px;
 }
 
-.todo-item small {
-display: none;
+.input-box input{
+flex:1;
+padding:15px;
+border:none;
+outline:none;
+border-radius:12px;
+background:#1e293b;
+color:white;
+font-size:16px;
 }
 
-.actions {
-display: flex;
-gap: 5px;
+.input-box button{
+padding:15px 25px;
+border:none;
+border-radius:12px;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+transition:0.3s;
 }
 
-.edit-btn {
-background: #f59e0b;
-border: none;
-color: white;
-padding: 8px 10px;
-border-radius: 4px;
-cursor: pointer;
+.input-box button:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 20px rgba(59,130,246,.4);
 }
 
-.delete-btn {
-background: #ef4444;
-border: none;
-color: white;
-padding: 8px 10px;
-border-radius: 4px;
-cursor: pointer;
+.stats{
+margin-bottom:25px;
 }
 
-.footer {
-margin-top: 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
+.card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,.1);
+
+padding:25px;
+border-radius:20px;
+
+color:white;
+
+animation:fadeUp 1s ease;
 }
 
-.footer button {
-background: #8b5cf6;
-color: white;
-border: none;
-padding: 10px 15px;
-border-radius: 4px;
-cursor: pointer;
+.card h2{
+font-size:40px;
+}
+
+.card span{
+color:#94a3b8;
+}
+
+.todo-list{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.todo-card{
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,.08);
+
+padding:18px 20px;
+
+border-radius:18px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+color:white;
+
+transition:0.3s;
+
+animation:slideIn 0.5s ease;
+}
+
+.todo-card:hover{
+transform:translateY(-4px);
+box-shadow:
+0 15px 25px rgba(0,0,0,.25);
+}
+
+.todo-card h3{
+font-size:18px;
+}
+
+.todo-card small{
+color:#94a3b8;
+}
+
+.actions{
+display:flex;
+gap:10px;
+}
+
+.actions button{
+border:none;
+cursor:pointer;
+width:45px;
+height:45px;
+border-radius:12px;
+transition:0.3s;
+}
+
+.edit{
+background:#f59e0b;
+}
+
+.delete{
+background:#ef4444;
+}
+
+.edit:hover,
+.delete:hover{
+transform:scale(1.1);
+}
+
+@keyframes fadeDown{
+from{
+opacity:0;
+transform:translateY(-30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+@keyframes slideIn{
+from{
+opacity:0;
+transform:translateX(-30px);
+}
+to{
+opacity:1;
+transform:translateX(0);
+}
 }

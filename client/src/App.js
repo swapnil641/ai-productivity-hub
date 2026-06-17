@@ -47,52 +47,67 @@ const updateTodo = async (id) => {
   getTodos();
 };
 
-  return (
+return (
 
-  <div className="App">
-    <h1>Todo App</h1>
+  <div className="app">
+    <div className="container">
+      <div className="header">
+        <h1>🚀 DevOps Todo Dashboard</h1>
+        <p>React • Node.js • PostgreSQL • Docker • Jenkins</p>
+      </div>
 
-<div className="input-container">
-  <input
-    type="text"
-    placeholder="Add your new todo"
-    value={title}
-    onChange={(e) => setTitle(e.target.value)}
-  />
+```
+  <div className="input-box">
+    <input
+      type="text"
+      placeholder="Add a new task..."
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
 
-  <button onClick={addTodo}>+</button>
-</div>
+    <button onClick={addTodo}>Add Task</button>
+  </div>
 
-{todos.map((todo) => (
-  <div className="todo-item" key={todo.id}>
-    <h3>{todo.title}</h3>
-
-    <div className="actions">
-      <button
-        className="edit-btn"
-        onClick={() => updateTodo(todo.id)}
-      >
-        ✏️
-      </button>
-
-      <button
-        className="delete-btn"
-        onClick={() => deleteTodo(todo.id)}
-      >
-        🗑️
-      </button>
+  <div className="stats">
+    <div className="card">
+      <h2>{todos.length}</h2>
+      <span>Total Tasks</span>
     </div>
   </div>
-))}
 
-<div className="footer">
-  <span>You have {todos.length} pending tasks</span>
+  <div className="todo-list">
+    {todos.map((todo) => (
+      <div className="todo-card" key={todo.id}>
+        <div>
+          <h3>{todo.title}</h3>
+          <small>Task #{todo.id}</small>
+        </div>
+
+        <div className="actions">
+          <button
+            className="edit"
+            onClick={() => updateTodo(todo.id)}
+          >
+            ✏️
+          </button>
+
+          <button
+            className="delete"
+            onClick={() => deleteTodo(todo.id)}
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
 </div>
+```
 
   </div>
 );
 
-
+  
 }
 
 export default App;

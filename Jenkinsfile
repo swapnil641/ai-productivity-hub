@@ -3,6 +3,7 @@ pipeline {
 
     options {
         timestamps()
+        disableConcurrentBuilds()
     }
 
     environment {
@@ -12,6 +13,10 @@ pipeline {
 
         BACKEND_REPO = 'ai-productivity-backend'
         FRONTEND_REPO = 'ai-productivity-frontend'
+
+        EC2_HOST = '65.2.123.160'
+        EC2_USER = 'ubuntu'
+        DEPLOY_PATH = '/opt/ai-productivity-hub'
     }
 
     stages {
@@ -24,9 +29,10 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 sh '''
-                    echo "Building backend Docker image..."
+                    set -eu
+
                     docker build \
-                      -t ${ECR_REGISTRY}/${BACKEND_REPO}:${BUILD_NUMBER} \
+                      -t "$ECR_REGISTRY/$BACKEND_REPO:$BUILD_NUMBER" \
                       ./server
                 '''
             }
@@ -35,9 +41,10 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 sh '''
-                    echo "Building frontend Docker image..."
+                    set -eu
+
                     docker build \
-                      -t ${ECR_REGISTRY}/${FRONTEND_REPO}:${BUILD_NUMBER} \
+                      -t "$ECR_REGISTRY/$FRONTEND_REPO:$BUILD_NUMBER" \
                       ./client
                 '''
             }
@@ -53,9 +60,9 @@ pipeline {
                     )
                 ]) {
                     sh '''
+                        set -eu
                         set +x
-                        export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
-                        export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+
                         export AWS_DEFAULT_REGION="$AWS_REGION"
 
                         aws ecr get-login-password \
@@ -70,36 +77,67 @@ pipeline {
 
         stage('Push Images to ECR') {
             options {
-                timeout(time: 15, unit: 'MINUTES')
+                timeout(time: 20, unit: 'MINUTES')
             }
 
             steps {
                 sh '''
-                    echo "Pushing backend image to ECR..."
-                    docker push \
-                      ${ECR_REGISTRY}/${BACKEND_REPO}:${BUILD_NUMBER}
+                    set -eu
 
-                    echo "Pushing frontend image to ECR..."
+                    echo "Pushing backend image..."
                     docker push \
-                      ${ECR_REGISTRY}/${FRONTEND_REPO}:${BUILD_NUMBER}
+                      "$ECR_REGISTRY/$BACKEND_REPO:$BUILD_NUMBER"
+
+                    echo "Pushing frontend image..."
+                    docker push \
+                      "$ECR_REGISTRY/$FRONTEND_REPO:$BUILD_NUMBER"
 
                     echo "Both images pushed successfully."
                 '''
+            }
+        }
+
+        stage('Deploy to EC2') {
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+
+            steps {
+                sshagent(credentials: ['ec2-ssh-key']) {
+                    sh '''
+                        set -eu
+
+                        echo "Deploying build $BUILD_NUMBER to EC2..."
+
+                        ssh \
+                          -o StrictHostKeyChecking=accept-new \
+                          -o ConnectTimeout=15 \
+                          "$EC2_USER@$EC2_HOST" \
+                          "cd '$DEPLOY_PATH' &&
+                           export IMAGE_TAG='$BUILD_NUMBER' &&
+                           sudo -E docker compose \
+                             -f docker-compose.prod.yml pull &&
+                           sudo -E docker compose \
+                             -f docker-compose.prod.yml up -d &&
+                           sudo docker compose \
+                             -f docker-compose.prod.yml ps"
+                    '''
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'SUCCESS: Frontend and backend images pushed to Amazon ECR.'
+            echo 'SUCCESS: Images pushed to ECR and deployment completed.'
         }
 
         failure {
-            echo 'FAILURE: Check the Jenkins console output for the error.'
+            echo 'FAILURE: Check the Jenkins Console Output.'
         }
 
         aborted {
-            echo 'BUILD ABORTED: Check the Jenkins console output.'
+            echo 'BUILD ABORTED.'
         }
 
         always {

@@ -11,12 +11,12 @@ function App() {
   }, []);
 
   const getTodos = async () => {
-    const response = await axios.get("http://3.110.189.247:5000/api/todos");
+    const response = await axios.get("/api/todos");
     setTodos(response.data);
   };
 
   const addTodo = async () => {
-    await axios.post("http://3.110.189.247:5000/api/todos", {
+    await axios.post("/api/todos", {
       title: title
     });
 
@@ -26,7 +26,7 @@ function App() {
 
 const deleteTodo = async (id) => {
   await axios.delete(
-    `http://3.110.189.247:5000/api/todos/${id}`
+    `/api/todos/${id}`
   );
 
   getTodos();
@@ -39,7 +39,7 @@ const updateTodo = async (id) => {
   if (!newTitle) return;
 
   await axios.put(
-    `http://3.110.189.247:5000/api/todos/${id}`,
+    `/api/todos/${id}`,
     {
       title: newTitle
     }

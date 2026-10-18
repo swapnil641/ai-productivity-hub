@@ -1,0 +1,36 @@
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    image: 290952542648.dkr.ecr.ap-south-1.amazonaws.com/ai-productivity-backend:${IMAGE_TAG}
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: "5432"
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: 290952542648.dkr.ecr.ap-south-1.amazonaws.com/ai-productivity-frontend:${IMAGE_TAG}
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

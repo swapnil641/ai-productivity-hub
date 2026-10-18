@@ -1,74 +1,76 @@
+
 pipeline {
     agent any
 
+    environment {
+        AWS_REGION = 'ap-south-1'
+        AWS_ACCOUNT_ID = '290952542648'
+        ECR_REGISTRY = '290952542648.dkr.ecr.ap-south-1.amazonaws.com'
+        BACKEND_REPO = 'ai-productivity-backend'
+        FRONTEND_REPO = 'ai-productivity-frontend'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Build Images') {
             steps {
-                sh 'docker compose down || true'
-                sh 'docker compose build'
+                sh '''
+                    docker build \
+                      -t ${ECR_REGISTRY}/${BACKEND_REPO}:${BUILD_NUMBER} \
+                      ./server
+
+                    docker build \
+                      -t ${ECR_REGISTRY}/${FRONTEND_REPO}:${BUILD_NUMBER} \
+                      ./client
+                '''
             }
         }
 
-        stage('Tag Images') {
+        stage('Login to Amazon ECR') {
             steps {
-                sh 'docker tag pern-todo-pipeline-backend sopudada641/pern-backend'
-                sh 'docker tag pern-todo-pipeline-frontend sopudada641/pern-frontend'
-            }
-        }
-
-        stage('Push to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'aws-ecr-credentials',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
                     sh '''
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push sopudada641/pern-backend
-                        docker push sopudada641/pern-frontend
+                        export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"
+                        export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+                        export AWS_DEFAULT_REGION="$AWS_REGION"
+
+                        aws ecr get-login-password --region "$AWS_REGION" |
+                          docker login \
+                            --username AWS \
+                            --password-stdin "$ECR_REGISTRY"
                     '''
                 }
             }
         }
 
-        stage('Deploy Locally') {
+        stage('Push Images to ECR') {
             steps {
-                sh 'docker compose up -d'
-            }
-        }
-
-        stage('Verify Local') {
-            steps {
-                sh 'docker ps'
-            }
-        }
-
-        stage('Deploy to Ubuntu Server') {
-            steps {
-                // Make sure 'ubuntu-server-ssh' credential (SSH key) exists in Jenkins
-                sshagent(['ubuntu@3.110.189.247']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@3.110.189.247 '
-                            cd ~/pern-app &&
-                            docker compose down || true &&
-                            docker pull sopudada641/pern-backend &&
-                            docker pull sopudada641/pern-frontend &&
-                            docker compose up -d
-                        '
-                    '''
-                }
+                sh '''
+                    docker push ${ECR_REGISTRY}/${BACKEND_REPO}:${BUILD_NUMBER}
+                    docker push ${ECR_REGISTRY}/${FRONTEND_REPO}:${BUILD_NUMBER}
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline Completed Successfully'
+            echo 'Frontend and backend images pushed to Amazon ECR.'
         }
         failure {
-            echo 'Pipeline Failed'
+            echo 'Pipeline failed. Check the Jenkins console output.'
         }
     }
 }
+
